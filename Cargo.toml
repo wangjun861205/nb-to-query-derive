@@ -2,11 +2,11 @@
 name = "nb-to-query-derive"
 version = "0.1.0"
 edition = "2021"
+description = "simple macro for converting struct to http query string"
+license = "MIT"
 
 [lib]
 proc-macro = true
-description = "simple macro for converting struct to http query string"
-license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
