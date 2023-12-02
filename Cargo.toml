@@ -5,6 +5,8 @@ edition = "2021"
 
 [lib]
 proc-macro = true
+description = "simple macro for converting struct to http query string"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
