@@ -18,8 +18,41 @@ pub fn to_query_derive(input: TokenStream) -> TokenStream {
             }
         }
         let name = input.ident;
+        let generics = input.generics;
+        if generics.params.iter().count() == 0 {
+            return quote! {
+                impl ToQuery for #name {
+                    fn to_query(&self, _: &str) -> Option<String> {
+                        let mut pairs = Vec::new();
+                        #(#pairs)*
+                        if pairs.is_empty() {
+                            return None;
+                        }
+                        let pairs: Vec<String> = pairs.into_iter().flat_map(|p| p).collect();
+                        Some(pairs.join("&"))
+                    }
+                }
+            }
+            .into();
+        }
+        if let Some(where_clause) = generics.where_clause.clone() {
+            return quote! {
+                impl #generics ToQuery for #name #generics #where_clause{
+                    fn to_query(&self, _: &str) -> Option<String> {
+                        let mut pairs = Vec::new();
+                        #(#pairs)*
+                        if pairs.is_empty() {
+                            return None;
+                        }
+                        let pairs: Vec<String> = pairs.into_iter().flat_map(|p| p).collect();
+                        Some(pairs.join("&"))
+                    }
+                }
+            }
+            .into();
+        }
         return quote! {
-            impl ToQuery for #name {
+            impl #generics ToQuery for #name #generics {
                 fn to_query(&self, _: &str) -> Option<String> {
                     let mut pairs = Vec::new();
                     #(#pairs)*
